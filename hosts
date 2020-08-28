@@ -1,20 +1,14 @@
 [load_balancers]
-frontend1 ansible_host=frontend1."{{ GUID }}".internal
+frontend1 
 
 [app_servers]
-app1 ansible_host=app1."{{ GUID }}".internal
-app2 ansible_host=app2."{{ GUID }}".internal
+app1 
+app2
 
 [database_servers]
-appdb1 ansible_host=appdb1."{{ GUID }}".internal
+appdb1
 
 [internal:children]
 load_balancers
 app_servers
 database_servers
-
-[internal:vars]
-GUID = "{{ lookup('env', 'GUID') }}"
-ansible_ssh_user = ec2-user
-ansible_ssh_private_key_file=~/.ssh/opentlc_admin_backdoor.pem
-

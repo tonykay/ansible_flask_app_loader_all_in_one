@@ -113,6 +113,8 @@
   gather_facts: false
   tags:
     - application_servers
+    - flask
+    
   vars:
     flask_app_name: resource_hub
     flask_user: flask
@@ -134,6 +136,7 @@
       - python3
       - python3-devel
       - python3-pip
+      - python-psycopg2
 
     pip_dependencies:
       - virtualenv
@@ -248,49 +251,48 @@
         name: haproxy
         state: restarted
 
-#- name: End to end smoke tests
-#  hosts: app_servers:database_servers
-#  gather_facts: true
-#  become: true
-#  tags:
-#    - smoketest  
-#
-#  tasks:
-#
-#    - debug:
-#        msg: 
-#          - "IP is {{ hostvars['appdb1']['ansible_default_ipv4']['address'] }}"
-#          - "First App server  {{ groups.app_servers[0] }}" 
-#        verbosity: 2        
-#
-#    - name: Smoketest Postgres database
-#      postgresql_ping:
-#        db: flask_db
-#        login_host: "{{ hostvars['appdb1']['ansible_default_ipv4']['address'] }}"
-#        login_user: flask
-#        login_password: redhat
-#        ssl_mode: disable
-#      delegate_to: "{{ groups.app_servers[0] }}"
-#      run_once: true
-#      tags:
-#        - smoketest
-#
-#- name: End to end smoke tests
-#  hosts: app_servers
-#  become: false
-#  gather_facts: false
-#  tags:
-#    - smoketest  
-#  tasks:
-# 
-#    - name: Check webserver for correct response
-#      uri:
-#        url: "http://frontend1.{{ GUID }}.example.opentlc.com"
-#        return_content: yes
-#      until: '"Welcome to Tomcat" in result.content'
-#      retries: 10
-#      delay: 1
-#      register: result
-#      delegate_to: localhost
-#
-#...
+- name: End to end smoke tests
+  hosts: app_servers:database_servers
+  gather_facts: true
+  become: true
+  tags:
+    - smoketest  
+
+  tasks:
+
+    - debug:
+        msg: 
+          - "IP is {{ hostvars['appdb1']['ansible_default_ipv4']['address'] }}"
+          - "First App server  {{ groups.app_servers[0] }}" 
+        verbosity: 2        
+
+    - name: Smoketest Postgres database
+      postgresql_ping:
+        db: flask_db
+        login_host: "{{ hostvars['appdb1']['ansible_default_ipv4']['address'] }}"
+        login_user: flask
+        login_password: redhat
+        ssl_mode: disable
+      delegate_to: "{{ groups.app_servers[0] }}"
+      run_once: true
+      tags:
+        - smoketest
+
+- name: End to end smoke tests
+  hosts: app_servers
+  become: false
+  gather_facts: false
+  tags:
+    - smoketest  
+  tasks:
+ 
+    - name: Check webserver for correct response
+      uri:
+      #  url: "http://frontend1.{{ GUID }}.example.opentlc.com/ping"
+        url: "http://frontend1/ping"
+        return_content: yes
+      until: '"alive" in result.content'
+      retries: 10
+      delay: 1
+      register: result
+      delegate_to: localhost
