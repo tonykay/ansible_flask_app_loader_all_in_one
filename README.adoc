@@ -15,24 +15,13 @@ Assumes a configuration matching an AgnosticD `three-tier-app` with a `devops` s
 +
 [source,bash]
 ----
-export GUID=<YOUR_GUID>
 ansible-playbook main.yml
 ----
 
 
-=== Overall architecture is:
+=== Overall Architecture 
 
-          Cflask1
-lb ->     fla          postgres 
-          flask2
-          flaskn...
-          
-
-
-
-
-
-
+image::.images/ntier-app-topology.png[role="thumb center" width=80%]
 
 *Concept change from `bad-ansible`*
 
