@@ -1,0 +1,20 @@
+---
+# tasks file for wilson-role
+- name: Install load balancer packages
+  package:
+    name: "{{ load_balancer_packages }}"
+    state: present
+  tags:
+    - load_balancer_install
+
+- name: Configure haproxy load balancing
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+  notify: restart_haproxy
+
+- name: Enable Haproxy
+  service:
+    name: haproxy
+    state: started
+    enabled: true

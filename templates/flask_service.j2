@@ -1,0 +1,13 @@
+[Unit]
+Description=Launch flask app {{ flask_app_name }}
+After=network.target
+
+[Service]
+User={{ flask_user }}
+# User={{ flask_user }}
+Group=flask
+WorkingDirectory={{ flask_home }}/{{ flask_app_name }}
+ExecStart=/usr/local/bin/launch_resource_hub
+
+[Install]
+WantedBy=multi-user.target

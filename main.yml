@@ -28,8 +28,8 @@
       - name: flask_db
         owner: flask
       - name: books_store
-        owner: flask
-
+        owner: flask    
+    
   tasks:
 
     - name: Install Postgres packages

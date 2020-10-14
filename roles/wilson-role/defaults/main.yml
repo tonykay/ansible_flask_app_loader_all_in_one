@@ -1,0 +1,4 @@
+---
+# defaults file for wilson-role
+load_balancer_packages:
+  - haproxy

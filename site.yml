@@ -1,0 +1,13 @@
+---
+- import_playbook: provision_database_tier.yml
+- import_playbook: provision_app_tier.yml
+- name: Deploy haproxy load balancer
+  hosts: load_balancers
+  gather_facts: false
+  become: true 
+#  tags:
+#    - load_balancers
+  roles:
+    - wilson-role
+#import_playbook: provision_load_balancer_tier.yml
+- import_playbook: smoke_tests.yml
