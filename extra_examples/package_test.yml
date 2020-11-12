@@ -1,0 +1,12 @@
+---
+- name: create tower creds
+  hosts: localhost
+  connection: local
+  become: true
+  gather_facts: false
+  tasks:
+    - name: install packages
+      package:
+        name: screen
+        state: latest
+        disable_gpg_check: true
