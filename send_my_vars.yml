@@ -10,6 +10,14 @@
     tower_admin_password: redhat123
     tower_verify_ssl: false
   tasks:
+    - name: set varaibles for workflow
+      set_stats:
+        data:
+          tower_hostname: https://tower1.712d.example.opentlc.com
+          tower_admin_username: admin       
+          tower_admin_password: redhat123   
+          tower_verify_ssl: false 
+
     - name: show my variables
       debug:
         msg: "{{ tower_hostname }}"
