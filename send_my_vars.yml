@@ -1,0 +1,15 @@
+---
+- name: create tower creds
+  hosts: localhost
+  connection: local
+  become: false
+  gather_facts: false
+  vars:
+    tower_hostname: https://tower1.712d.example.opentlc.com
+    tower_admin_username: admin
+    tower_admin_password: redhat123
+    tower_verify_ssl: false
+  tasks:
+    - name: show my variables
+      debug:
+        msg: "{{ tower_hostname }}"
