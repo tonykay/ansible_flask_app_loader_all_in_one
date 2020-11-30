@@ -133,9 +133,7 @@
       - git
       - gcc
       - libtool
-      - python3
-      - python3-devel
-      - python3-pip
+      - rh-python36
       - python-psycopg2
 
     pip_dependencies:
