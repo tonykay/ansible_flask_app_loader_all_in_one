@@ -133,9 +133,7 @@
       - git
       - gcc
       - libtool
-      - python3
-      - python3-devel
-      - python3-pip
+      - rh-python36
       - python-psycopg2
 
     pip_dependencies:
@@ -179,14 +177,14 @@
           pip:
             name: "{{ pip_dependencies }}"
             state: latest
-            executable: /usr/bin/pip3
+            executable: /opt/rh/rh-python36/root/usr/bin/pip3
 
         - name: "Create virtualenv {{ virtualenv_name }} for Flask"
           pip:
             requirements: "{{ flask_home }}/{{ flask_app_name }}/requirements.txt"
             virtualenv: "{{ virtualenv_home }}/{{ flask_app_name }}"
             virtualenv_site_packages: no
-            virtualenv_command: /usr/local/bin/virtualenv
+            virtualenv_command: /opt/rh/rh-python36/root/usr/bin/virtualenv
       tags:
         - venv
         - virtualenv  
