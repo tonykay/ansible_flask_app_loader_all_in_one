@@ -1,4 +1,5 @@
 ---
+#- import_playbook: in_mem.yml
 - import_playbook: provision_database_tier.yml
 - import_playbook: provision_app_tier.yml
 - name: Deploy haproxy load balancer

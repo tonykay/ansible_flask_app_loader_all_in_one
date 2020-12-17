@@ -1,0 +1,56 @@
+---
+- name: create in memory inventory
+  hosts: localhost
+  connection: local
+  become: false
+  gather_facts: false
+  tasks:
+    - name: Fetch Instance Info
+      os_server_info:
+        cloud: openstack
+        region_name: regionOne
+      register: r_os_servers
+
+    - name: Add host
+      add_host:
+        name: "{{ item.public_v4 }}"
+        group:
+          - "{{ item.metadata.group }}"
+          - "{{ item.metadata.deployment_name }}"
+      loop: "{{ r_os_servers.openstack_servers }}"
+
+- name: use in memory inventory
+  hosts: all
+  become: true
+  gather_facts: true
+  tasks:
+    - name:
+      template:
+        src: ./files/apps_repos
+        dest: /etc/yum.repos.d/apps_repos.repo
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: debug facts
+      debug:
+        msg: "{{ ansible_facts }}"
+        verbosity: 2
+
+    - when: ansible_facts.hostname == "appdb1"
+      block:
+        - name:
+          template:
+            src: ./files/pg_repos
+            dest: /etc/yum.repos.d/pg_repos.repo
+            owner: root
+            group: root
+            mode: '0644'
+        
+        - name:
+          template:
+            src: ./files/RPM-GPG-KEY-PGDG
+            dest: /etc/pki/rpm-gpg/RPM-GPG-KEY-PGDG
+            owner: root
+            group: root
+            mode: '0644'

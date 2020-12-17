@@ -1,0 +1,19 @@
+---
+- import_playbook: openstack_deploy_repos.yml
+- name: update systems and reboot systems
+  hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+    - name: update all packages
+      yum:
+        name: "*"
+        state: latest
+    
+    - name: wait a few seconds after updates
+      wait_for:
+        timeout: 30
+      delegate_to: localhost
+  
+    - name: reboot systems after update
+      reboot:
