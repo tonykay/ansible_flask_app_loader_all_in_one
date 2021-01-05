@@ -133,9 +133,7 @@
       - git
       - gcc
       - libtool
-      - python3
-      - python3-devel
-      - python3-pip
+      - rh-python36
       - python-psycopg2
 
     pip_dependencies:
@@ -179,14 +177,14 @@
           pip:
             name: "{{ pip_dependencies }}"
             state: latest
-            executable: /usr/bin/pip3
+            executable: /opt/rh/rh-python36/root/bin/pip3
 
         - name: "Create virtualenv {{ virtualenv_name }} for Flask"
           pip:
             requirements: "{{ flask_home }}/{{ flask_app_name }}/requirements.txt"
             virtualenv: "{{ virtualenv_home }}/{{ flask_app_name }}"
             virtualenv_site_packages: no
-            virtualenv_command: /usr/local/bin/virtualenv
+            virtualenv_command: /opt/rh/rh-python36/root/bin/virtualenv
       tags:
         - venv
         - virtualenv  
@@ -260,16 +258,10 @@
 
   tasks:
 
-    - debug:
-        msg: 
-          - "IP is {{ hostvars['appdb1']['ansible_default_ipv4']['address'] }}"
-          - "First App server  {{ groups.app_servers[0] }}" 
-        verbosity: 2        
-
     - name: Smoketest Postgres database
       postgresql_ping:
         db: flask_db
-        login_host: "{{ hostvars['appdb1']['ansible_default_ipv4']['address'] }}"
+        login_host: "{{ groups.database_servers[0] }}"
         login_user: flask
         login_password: redhat
         ssl_mode: disable
@@ -288,8 +280,7 @@
  
     - name: Check webserver for correct response
       uri:
-      #  url: "http://frontend1.{{ GUID }}.example.opentlc.com/ping"
-        url: "http://frontend1/ping"
+        url: "http://frontend/ping"
         return_content: yes
       until: '"alive" in result.content'
       retries: 10

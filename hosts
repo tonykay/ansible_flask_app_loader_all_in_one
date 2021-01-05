@@ -1,9 +1,9 @@
 [load_balancers]
-frontend1 
+frontend 
 
 [app_servers]
-app1 
-app2
+app-01
+app-02
 
 [database_servers]
 appdb1
