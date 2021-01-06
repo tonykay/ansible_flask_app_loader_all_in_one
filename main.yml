@@ -133,12 +133,13 @@
       - git
       - gcc
       - libtool
-      - rh-python36
-      - python-psycopg2
+      - python3
+        #- python-psycopg2
 
     pip_dependencies:
       - virtualenv
       - pip  
+      - psycopg2
       - psycopg2-binary
 
   tasks:
@@ -170,21 +171,21 @@
         dest: "{{ flask_home }}/{{ flask_app_name }}"
         owner: "{{ flask_user }}"
 
-    - name: virtualenv setup
+    - name: Virtualenv setup
       block:
 
         - name: Setup pre-requisite pip3 packages
           pip:
             name: "{{ pip_dependencies }}"
             state: latest
-            executable: /opt/rh/rh-python36/root/bin/pip3
+            executable: /usr/bin/pip3
 
         - name: "Create virtualenv {{ virtualenv_name }} for Flask"
           pip:
             requirements: "{{ flask_home }}/{{ flask_app_name }}/requirements.txt"
             virtualenv: "{{ virtualenv_home }}/{{ flask_app_name }}"
             virtualenv_site_packages: no
-            virtualenv_command: /opt/rh/rh-python36/root/bin/virtualenv
+            virtualenv_command: /usr/local/bin/virtualenv
       tags:
         - venv
         - virtualenv  
