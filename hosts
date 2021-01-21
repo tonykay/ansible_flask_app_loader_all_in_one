@@ -1,12 +1,12 @@
 [load_balancers]
-frontend1 ansible_host=
+frontend1 #ansible_host=192.0.2.200
 
 [app_servers]
-app1 ansible_host=
-app2 ansible_host=
+app1 #ansible_host=192.0.2.186
+app2 #ansible_host=192.0.2.170
 
 [database_servers]
-appdb1 ansible_host=
+appdb1 #ansible_host=192.0.2.189
 
 [internal:children]
 load_balancers
