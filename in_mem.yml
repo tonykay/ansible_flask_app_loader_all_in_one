@@ -6,15 +6,18 @@
   gather_facts: false
   tasks:
     - name: Fetch Instance Info
-      os_server_info:
+      os_server_facts:
         cloud: openstack
         region_name: regionOne
       register: r_os_servers
-
+    
+    - debug:
+        msg: "{{ r_os_servers }}"
+        
     - name: Add host
       add_host:
         name: "{{ item.public_v4 }}"
         group:
           - "{{ item.metadata.group }}"
           - "{{ item.metadata.deployment_name }}"
-      loop: "{{ r_os_servers.openstack_servers }}"
+      loop: "{{ r_os_servers.ansible_facts.openstack_servers }}"
