@@ -1,12 +1,19 @@
+
 [load_balancers]
-frontend 
+frontend1.724e.internal
 
 [app_servers]
-app-01
-app-02
+app1.724e.internal
+app2.724e.internal
 
 [database_servers]
-appdb1
+appdb1.724e.internal
+
+[all:vars]
+timeout=60
+ansible_user=ec2-user
+ansible_ssh_private_key_file="~/.ssh/724ekey.pem"
+ansible_ssh_common_args="-o StrictHostKeyChecking=no"
 
 [internal:children]
 load_balancers
