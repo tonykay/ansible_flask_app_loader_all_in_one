@@ -278,7 +278,7 @@
  
     - name: Check webserver for correct response
       uri:
-        url: "http://frontend/ping"
+        url: "http://frontend1.724e.example.opentlc.com/ping"
         return_content: yes
       until: '"alive" in result.content'
       retries: 10
