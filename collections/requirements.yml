@@ -3,7 +3,7 @@ roles:
 - name: geerlingguy.postgresql 
 
 collections:
-- name: ansible.tower
+- name: awx.awx
 
 #- name: theforeman.foreman
 #  version: '1.2.0'
