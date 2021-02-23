@@ -1,5 +1,3 @@
----
-# handlers file for wilson-role
 - name: restart_haproxy
   service:
     name: haproxy

@@ -1,11 +1,8 @@
 ---
-# tasks file for wilson-role
 - name: Install load balancer packages
   package:
     name: "{{ load_balancer_packages }}"
     state: present
-  tags:
-    - load_balancer_install
 
 - name: Configure haproxy load balancing
   template:

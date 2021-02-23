@@ -1,14 +1,45 @@
 ---
-- import_playbook: in_mem.yml
 - import_playbook: provision_database_tier.yml
+
 - import_playbook: provision_app_tier.yml
-- name: Deploy haproxy load balancer
-  hosts: load_balancers
+
+- import_playbook: provision_load_balancer_tier.yml
+
+- name: Database smoke tests
+  hosts: app_servers:database_servers
+  gather_facts: true
+  become: true
+  tags:
+    - smoketest
+ 
+  tasks:
+ 
+    - name: Smoketest Postgres database
+      postgresql_ping:
+        db: flask_db
+        login_host: "{{ groups.database_servers[0] }}"
+        login_user: flask
+        login_password: redhat
+        ssl_mode: disable
+      delegate_to: "{{ groups.app_servers[0] }}"
+      run_once: true
+      tags:
+        - smoketest
+
+- name: Application smoke tests
+  hosts: app_servers
+  become: false
   gather_facts: false
-  become: true 
-#  tags:
-#    - load_balancers
-  roles:
-    - wilson-role
-#import_playbook: provision_load_balancer_tier.yml
-#- import_playbook: smoke_tests.yml
+  tags:
+    - smoketest  
+  tasks:
+ 
+    - name: Check webserver for correct response
+      uri:
+        url: "http://frontend1.cd58.example.opentlc.com/ping"
+        return_content: yes
+      until: '"alive" in result.content'
+      retries: 10
+      delay: 1
+      register: result
+      delegate_to: localhost
