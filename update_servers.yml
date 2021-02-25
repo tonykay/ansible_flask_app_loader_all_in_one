@@ -1,0 +1,13 @@
+---
+- name: Update servers to prepare for application
+  hosts: app_servers:database_servers:load_balancers
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Update all packages
+      yum:
+        name: "*"
+        state: latest
+
+    - name: Reboot for Kernel 
+      reboot:
