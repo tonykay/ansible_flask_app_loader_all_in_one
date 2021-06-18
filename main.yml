@@ -134,10 +134,11 @@
       - gcc
       - libtool
       - python3
+      - python-psycopg2
 
     pip_dependencies:
       - virtualenv
-      - psycopg2-binary
+      - psycopg2-binary==2.8.6
 
   tasks:
 
@@ -278,7 +279,7 @@
  
     - name: Check webserver for correct response
       uri:
-        url: "http://frontend/ping"
+        url: "http://frontend1/ping"
         return_content: yes
       until: '"alive" in result.content'
       retries: 10
