@@ -7,31 +7,6 @@
     - application_servers
     - flask
     
-  vars:
-    flask_app_name: resource_hub
-    flask_user: flask
-    flask_home: /opt/
-    flask_repo: https://github.com/tonykay/resource_hub.git  
-    flask_scm_ref: main  
-    flask_app_lauch_script: /usr/local/bin/launch_resource_hub   
-    virtualenv_name: "venv-{{ flask_app_name }}"  
-    virtualenv_home: /opt/virtual_envs
-    virtualenv_python: /usr/bin/python3
-      
-
-    app_yum_packages:
-      - autoconf
-      - automake
-      - git
-      - gcc
-      - libtool
-      - python3
-      - python-psycopg2
-
-    pip_dependencies:
-      - virtualenv
-      - psycopg2-binary==2.8.6
-
   tasks:
 
     - name: Create flask user
