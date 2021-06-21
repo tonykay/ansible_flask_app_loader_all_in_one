@@ -61,13 +61,13 @@
 
     - name: "Generate {{ flask_app_name }} startup script"    
       template:
-        src: launch_resource_hub.j2
+        src: templates/launch_resource_hub.j2
         dest: /usr/local/bin/launch_resource_hub   
         mode: '0555'
 
     - name: template systemd service config
       template:
-        src: flask_service.j2
+        src: templates/flask_service.j2
         dest: /etc/systemd/system/{{ flask_app_name }}.service
         mode: '0755'
 
